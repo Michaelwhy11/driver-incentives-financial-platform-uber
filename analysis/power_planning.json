@@ -1,0 +1,10 @@
+{
+  "label": "Illustrative normal approximation; validate representative historical variance before launch",
+  "mde_contribution_usd_per_market_28_days": 100,
+  "alpha_two_sided": 0.05,
+  "desired_power": 0.8,
+  "paired_effect_sd_usd": 236.03143214556914,
+  "required_pairs_approximate": 44,
+  "required_markets_approximate": 88,
+  "existing_pairs": 24
+}

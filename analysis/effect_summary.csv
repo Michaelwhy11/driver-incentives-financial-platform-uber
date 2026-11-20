@@ -1,0 +1,3 @@
+metric,pairs,effect_usd,standard_deviation_usd,standard_error_usd,ci_lower_usd,ci_upper_usd,interval_method,unit
+Revenue,24,536.0754166666667,335.9710397454592,68.57980131072516,394.2072887929471,677.9435445403863,"Paired t, df=23, approximate 95%; no multiplicity adjustment",USD per market over 28 days
+Contribution,24,-103.37041666666667,236.03143214556914,48.17971433458295,-203.03774937252774,-3.7030839608055857,"Paired t, df=23, approximate 95%; no multiplicity adjustment",USD per market over 28 days

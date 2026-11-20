@@ -1,0 +1,4 @@
+incentive_usd,required_trip_lift,baseline_incentive_usd,revenue_per_trip_usd,variable_cost_per_trip_usd,new_contribution_per_trip_usd,baseline_contribution_usd,unit
+0.6,0.04152897910502823,0.4,6.590753312302839,1.174839116719243,4.815914195583596,3312.5933333333332,Per market over 28 days; assumed constant unit economics
+0.8,0.0866567234682809,0.4,6.590753312302839,1.174839116719243,4.6159141955835965,3312.5933333333332,Per market over 28 days; assumed constant unit economics
+1.1,0.162190434813625,0.4,6.590753312302839,1.174839116719243,4.315914195583596,3312.5933333333332,Per market over 28 days; assumed constant unit economics

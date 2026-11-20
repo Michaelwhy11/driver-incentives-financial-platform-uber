@@ -1,0 +1,63 @@
+{
+  "label": "ALL DATA AND RESULTS SIMULATED; not Uber data or policy",
+  "seed": 20261115,
+  "completed_trips": 63623,
+  "raw_events": 65839,
+  "clusters": 48,
+  "randomized_pairs": 24,
+  "checks": "PASS: deduplication, quarantine, reconciled amounts, contribution identity, injected discrepancy, early snapshot",
+  "experiment": {
+    "revenue": {
+      "adjusted_28_day_usd_per_cluster": 536.08,
+      "paired_bootstrap_95_interval_usd": [
+        405.02,
+        672.14
+      ],
+      "paired_randomization_two_sided_p_mc": 0.0001999600079984003
+    },
+    "contribution": {
+      "adjusted_28_day_usd_per_cluster": -103.37,
+      "paired_bootstrap_95_interval_usd": [
+        -192.53,
+        -12.03
+      ],
+      "paired_randomization_two_sided_p_mc": 0.04939012197560488
+    }
+  },
+  "forecast": {
+    "label": "SIMULATED descriptive seasonal-naive; not an incentive causal forecast",
+    "holdout_days": 7,
+    "holdout_mae_usd": 271.23,
+    "holdout_wape": 0.03363378205775488,
+    "next_7_days": [
+      {
+        "date": "2026-03-02",
+        "revenue_usd": 8198.21
+      },
+      {
+        "date": "2026-03-03",
+        "revenue_usd": 8566.31
+      },
+      {
+        "date": "2026-03-04",
+        "revenue_usd": 8634.72
+      },
+      {
+        "date": "2026-03-05",
+        "revenue_usd": 8637.86
+      },
+      {
+        "date": "2026-03-06",
+        "revenue_usd": 7301.97
+      },
+      {
+        "date": "2026-03-07",
+        "revenue_usd": 7383.98
+      },
+      {
+        "date": "2026-03-08",
+        "revenue_usd": 7725.85
+      }
+    ]
+  }
+}

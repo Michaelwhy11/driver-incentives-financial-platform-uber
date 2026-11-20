@@ -1,0 +1,12 @@
+WITH baseline AS (
+SELECT SUM(a.trips)::NUMERIC / NULLIF(COUNT(DISTINCT a.cluster_id), 0) AS baseline_trips_per_market, SUM(a.revenue_cents) / 100.0 / NULLIF(SUM(a.trips), 0) AS revenue_per_trip, SUM(a.variable_cost_cents) / 100.0 / NULLIF(SUM(a.trips), 0) AS variable_cost_per_trip, SUM(a.incentive_cents) / 100.0 / NULLIF(SUM(a.trips), 0) AS baseline_incentive_per_trip FROM uber_project1.daily_finance AS a JOIN uber_project1.experiment_cluster AS b USING (cluster_id) WHERE b.arm = 'control' AND a.service_date BETWEEN DATE '2026-02-02' AND DATE '2026-03-01'
+), assumptions AS (
+-- Three incentive levels × three assumed responses = nine scenarios.Incentives: $0.60, $0.80, $1.10 per trip Assumed trip increases: 0%, 6%, 12%
+SELECT a.incentive_per_trip, b.trip_lift FROM (VALUES (0.60::NUMERIC), (0.80::NUMERIC), (1.10::NUMERIC)) AS a(incentive_per_trip) CROSS JOIN (VALUES (0.00::NUMERIC), (0.06::NUMERIC), (0.12::NUMERIC)) AS b(trip_lift)
+), scenario_inputs AS (
+SELECT a.*, b.incentive_per_trip, b.trip_lift, a.baseline_trips_per_market * (1 + b.trip_lift) AS estimated_trips, a.revenue_per_trip - a.variable_cost_per_trip - b.incentive_per_trip AS new_contribution_per_trip, a.baseline_trips_per_market * (a.revenue_per_trip - a.variable_cost_per_trip - a.baseline_incentive_per_trip) AS baseline_contribution_usd FROM baseline AS a CROSS JOIN assumptions AS b
+), financial_forecasts AS (
+SELECT *, estimated_trips * revenue_per_trip AS predicted_revenue_usd, estimated_trips * incentive_per_trip AS predicted_incentive_usd, estimated_trips * variable_cost_per_trip AS predicted_variable_cost_usd, estimated_trips * new_contribution_per_trip AS predicted_contribution_usd FROM scenario_inputs
+)
+
+SELECT incentive_per_trip AS new_incentive_usd, ROUND(trip_lift * 100, 2) AS assumed_trip_lift_percent, ROUND(estimated_trips, 2) AS estimated_trips, ROUND(predicted_revenue_usd, 2) AS predicted_revenue_usd, ROUND(predicted_incentive_usd, 2) AS predicted_incentive_usd, ROUND(predicted_variable_cost_usd, 2) AS predicted_variable_cost_usd, ROUND(predicted_contribution_usd, 2) AS predicted_contribution_usd, ROUND(predicted_contribution_usd - baseline_contribution_usd, 2) AS incremental_contribution_usd, (CASE WHEN new_contribution_per_trip > 0 THEN ROUND(100.0 * (incentive_per_trip - baseline_incentive_per_trip) / new_contribution_per_trip, 2) END) AS min_trip_lift_percent FROM financial_forecasts ORDER BY incentive_per_trip, trip_lift;

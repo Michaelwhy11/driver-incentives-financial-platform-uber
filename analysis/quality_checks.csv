@@ -1,0 +1,8 @@
+check,observed,expected,status
+Daily rows,2688,2688,PASS
+Distinct market-day keys,2688,2688,PASS
+Assigned markets,48,48,PASS
+Randomized pairs,24,24,PASS
+Contribution identity errors,0,0,PASS
+Nonzero imported reconciliation rows,0,0,PASS
+Known quarantined fixture,1,1,PASS

@@ -1,0 +1,4 @@
+SELECT * FROM uber_project1.quarantine;
+SELECT a.event_id, a.trip_id, a.service_date, a.cluster_id, a.fare_cents, b.rejection_reason
+FROM uber_project1.quarantine AS a CROSS JOIN LATERAL (VALUES('negative fare', a.fare_cents < 0), ('negative driver payable', a.driver_base_cents < 0), ('driver payable exceeds fare', a.driver_base_cents > a.fare_cents), ('negative refund', a.refund_cents < 0), ('refund exceeds fare', a.refund_cents > a.fare_cents), ('negative incentive', a.incentive_cents < 0), ('negative variable cost', a.variable_cost_cents < 0)) AS b(rejection_reason, rule_failed) WHERE b.rule_failed IS TRUE ORDER BY a.event_id, b.rejection_reason;
+-- We should not change −100 to zero merely to make validation pass. For this exercise, the record is a known, deliberately injected invalid record, so we document its exclusion. In real data, an unexplained rejected financial record could prevent publication even when reconciliation differences are zero.

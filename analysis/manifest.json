@@ -1,0 +1,20 @@
+{
+  "breakeven_thresholds.csv": "0ae2a8273bf2557d35aec5c9605d3e11053757c0ae9db34d2cee90804681714f",
+  "controls.csv": "9bff6b7726ab406293617898f9b32917c60a36be4e488a4ceb784b6d03e5b92b",
+  "dim_date.csv": "753dcfd2f8dc2e40d3a1162f10f82f08e3d501478dac2f014f67d3ff39fefcfb",
+  "dim_market.csv": "99c39ecdf8df08b4e1f34ff33081ed871965812f12ac58446b3fe12fb0a1018b",
+  "effect_summary.csv": "dea9bc4f4aca099c68c8e558ee64b5db57e2e598b279a857d144b40860918fc2",
+  "finance.csv": "798de4c64f242e5eda0d10125732b3253cab734513f8d7fbe615b737e969816d",
+  "financial_bridge.csv": "e191e84ff1d33aec010b85043266ef6efc3466a82fa1e80d36c2422b5469852e",
+  "forecast_backtest.csv": "8db218d1fc7128bc8f60e5cf39b03aa1a39a7c129707988ac16170c2c66ff8ee",
+  "forecast_future.csv": "6f7f859a6f34ace1b91387c4d0f63f01dec07e9d92edd4b840a7cba08f28f7bd",
+  "original_daily_finance.csv": "24e744a5e3cf99d658d5ad413b6068c41ad8bca3ac70ed2fa98c5d2d0f128eb8",
+  "original_experiment_cluster.csv": "147605875f2298dfdcfad1975bb59ad26466e501aacaa55c044e65ca6098068e",
+  "original_quarantine.csv": "8701ace4dfa14762d644b6b2c45627d03143a6d8a3a6a23967924ff9d5a4e21a",
+  "original_reconciliation.csv": "9bff6b7726ab406293617898f9b32917c60a36be4e488a4ceb784b6d03e5b92b",
+  "pair_effects.csv": "1ddfe495fdd28a0609a3277249d877118520b4557fffabaa797fe6498b33662a",
+  "period_summary.csv": "ac7430b2ad79e9cb7f848265e009292cfb21dea43ac9626388c27c89f7911939",
+  "quality_checks.csv": "34f2c3727e4756271a38ea2550f75ffdf45138238cbe2f4ae01d935665673a50",
+  "quarantine.csv": "444ffd6ae1e5bf190ba9c849ea6f1a4d7114ea2d767dbc555978016f85e01859",
+  "scenarios.csv": "1f132de67bfb11139aff6792df3ed19f74e0f594206193270e656a49aa30304f"
+}
