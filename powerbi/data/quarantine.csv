@@ -1,0 +1,2 @@
+event_id,trip_id,cluster_id,service_date,fare_cents,primary_reason,rule_violations,resolution
+BAD-v1,BAD,0,2026-01-05,-100,Negative fare,3,Known simulated fixture; excluded from valid trip truth

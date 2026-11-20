@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "forecast",
+  "displayName": "04 Forecast and planning",
+  "displayOption": "FitToPage",
+  "width": 1280,
+  "height": 720,
+  "visualInteractions": [
+    {
+      "source": "backtestrevenue",
+      "target": "revmae",
+      "type": "NoFilter"
+    },
+    {
+      "source": "backtestrevenue",
+      "target": "revwape",
+      "type": "NoFilter"
+    },
+    {
+      "source": "backtestrevenue",
+      "target": "cmmae",
+      "type": "NoFilter"
+    },
+    {
+      "source": "backtestrevenue",
+      "target": "cmwape",
+      "type": "NoFilter"
+    },
+    {
+      "source": "backtestrevenue",
+      "target": "future",
+      "type": "NoFilter"
+    },
+    {
+      "source": "backtestcontribution",
+      "target": "revmae",
+      "type": "NoFilter"
+    },
+    {
+      "source": "backtestcontribution",
+      "target": "revwape",
+      "type": "NoFilter"
+    },
+    {
+      "source": "backtestcontribution",
+      "target": "cmmae",
+      "type": "NoFilter"
+    },
+    {
+      "source": "backtestcontribution",
+      "target": "cmwape",
+      "type": "NoFilter"
+    },
+    {
+      "source": "backtestcontribution",
+      "target": "future",
+      "type": "NoFilter"
+    }
+  ]
+}

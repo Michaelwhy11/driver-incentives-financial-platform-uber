@@ -1,0 +1,27 @@
+{
+  "name": "Uber-inspired practice",
+  "dataColors": [
+    "#06C167",
+    "#787878",
+    "#FF6B55",
+    "#276EF1",
+    "#B9B9B9"
+  ],
+  "background": "#FFFFFF",
+  "foreground": "#111111",
+  "tableAccent": "#06C167",
+  "textClasses": {
+    "title": {
+      "fontFace": "Arial",
+      "fontSize": 18
+    },
+    "label": {
+      "fontFace": "Arial",
+      "fontSize": 11
+    },
+    "callout": {
+      "fontFace": "Arial",
+      "fontSize": 30
+    }
+  }
+}

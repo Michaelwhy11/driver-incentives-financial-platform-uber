@@ -1,0 +1,1614 @@
+{
+  "name": "DriverIncentivesPractice",
+  "compatibilityLevel": 1600,
+  "model": {
+    "culture": "en-US",
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "sourceQueryCulture": "en-US",
+    "expressions": [
+      {
+        "name": "DataFolder",
+        "kind": "m",
+        "expression": "\"C:\\UberProject1\\data\" meta [IsParameterQuery=true, Type=\"Text\", IsParameterQueryRequired=true]"
+      }
+    ],
+    "tables": [
+      {
+        "name": "DimMarket",
+        "lineageTag": "58e6f1d1-3653-5ff2-be28-dc309f36dac9",
+        "description": "SIMULATED practice data. No Uber internal data.",
+        "columns": [
+          {
+            "name": "cluster_id",
+            "dataType": "int64",
+            "sourceColumn": "cluster_id",
+            "lineageTag": "7f09724b-cc5c-5380-ac12-8b25d8111518",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "pair_id",
+            "dataType": "int64",
+            "sourceColumn": "pair_id",
+            "lineageTag": "5a039c14-b49b-5dad-8293-391774700189",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "assigned_group",
+            "dataType": "string",
+            "sourceColumn": "assigned_group",
+            "lineageTag": "8ee803ca-ab06-54ef-b324-eb585299c9fd",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "DimMarket",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"\\dim_market.csv\"), [Delimiter=\",\", Columns=3, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    BlanksToNull = Table.ReplaceValue(Headers, \"\", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),",
+                "    Typed = Table.TransformColumnTypes(BlanksToNull, {{\"cluster_id\", Int64.Type}, {\"pair_id\", Int64.Type}, {\"assigned_group\", type text}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimDate",
+        "lineageTag": "b0c396ce-d2ed-5ffa-bfbd-b6002446f6cf",
+        "description": "SIMULATED practice data. No Uber internal data.",
+        "columns": [
+          {
+            "name": "date",
+            "dataType": "dateTime",
+            "sourceColumn": "date",
+            "lineageTag": "8e9c5111-9d7f-5e46-8d85-f86b4af72d40",
+            "summarizeBy": "none",
+            "formatString": "yyyy-MM-dd",
+            "isKey": true
+          },
+          {
+            "name": "weekday",
+            "dataType": "string",
+            "sourceColumn": "weekday",
+            "lineageTag": "2bd514c0-1e2a-574a-9ed3-de4c4b22dbae",
+            "summarizeBy": "none",
+            "sortByColumn": "weekday_number"
+          },
+          {
+            "name": "weekday_number",
+            "dataType": "int64",
+            "sourceColumn": "weekday_number",
+            "lineageTag": "36cf6d60-889a-56ba-99cb-b39a188f4aed",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "period",
+            "dataType": "string",
+            "sourceColumn": "period",
+            "lineageTag": "9988622c-1c05-5261-8f49-11ca02945ef6",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "DimDate",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"\\dim_date.csv\"), [Delimiter=\",\", Columns=4, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    BlanksToNull = Table.ReplaceValue(Headers, \"\", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),",
+                "    Typed = Table.TransformColumnTypes(BlanksToNull, {{\"date\", type date}, {\"weekday\", type text}, {\"weekday_number\", Int64.Type}, {\"period\", type text}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Finance",
+        "lineageTag": "2eeb28f4-1857-5044-b1a8-d6bd588c6557",
+        "description": "SIMULATED practice data. No Uber internal data.",
+        "columns": [
+          {
+            "name": "service_date",
+            "dataType": "dateTime",
+            "sourceColumn": "service_date",
+            "lineageTag": "f345715c-5b6a-5fd1-a24a-f0489b0cfed3",
+            "summarizeBy": "none",
+            "formatString": "yyyy-MM-dd"
+          },
+          {
+            "name": "cluster_id",
+            "dataType": "int64",
+            "sourceColumn": "cluster_id",
+            "lineageTag": "a964b473-6b9d-51c1-bfd4-133d48ff8a05",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "trips",
+            "dataType": "int64",
+            "sourceColumn": "trips",
+            "lineageTag": "4d28069a-68a6-5a45-b307-3a4817ecc840",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "gross_bookings_cents",
+            "dataType": "int64",
+            "sourceColumn": "gross_bookings_cents",
+            "lineageTag": "4bf41a79-daf0-55f8-97f4-0b9b5ceabf7d",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "revenue_cents",
+            "dataType": "int64",
+            "sourceColumn": "revenue_cents",
+            "lineageTag": "1e633164-59c3-5883-aa8c-5b2b9087f7d4",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "incentive_cents",
+            "dataType": "int64",
+            "sourceColumn": "incentive_cents",
+            "lineageTag": "a75fcf16-1bde-5d9a-952f-704c7b5ea9e5",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "variable_cost_cents",
+            "dataType": "int64",
+            "sourceColumn": "variable_cost_cents",
+            "lineageTag": "2965804e-789d-5511-93f1-bf63642476a3",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "contribution_cents",
+            "dataType": "int64",
+            "sourceColumn": "contribution_cents",
+            "lineageTag": "920fb5f3-65c5-585a-95e3-60cc5aaeccce",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "pair_id",
+            "dataType": "int64",
+            "sourceColumn": "pair_id",
+            "lineageTag": "e8da842d-6a17-5191-8e50-d8d3a99a63e2",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "assigned_group",
+            "dataType": "string",
+            "sourceColumn": "assigned_group",
+            "lineageTag": "cbfcda2d-5c7a-56ba-8ba1-37928bd0258c",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "period",
+            "dataType": "string",
+            "sourceColumn": "period",
+            "lineageTag": "578460b0-9fdb-50ec-bab8-8a417992773e",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Finance",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"\\finance.csv\"), [Delimiter=\",\", Columns=11, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    BlanksToNull = Table.ReplaceValue(Headers, \"\", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),",
+                "    Typed = Table.TransformColumnTypes(BlanksToNull, {{\"service_date\", type date}, {\"cluster_id\", Int64.Type}, {\"trips\", Int64.Type}, {\"gross_bookings_cents\", Int64.Type}, {\"revenue_cents\", Int64.Type}, {\"incentive_cents\", Int64.Type}, {\"variable_cost_cents\", Int64.Type}, {\"contribution_cents\", Int64.Type}, {\"pair_id\", Int64.Type}, {\"assigned_group\", type text}, {\"period\", type text}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Total Trips",
+            "expression": "SUM(Finance[trips])",
+            "formatString": "#,0",
+            "lineageTag": "a06e18a6-ec5d-5866-b578-0a2e694c57dc",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Gross Bookings USD",
+            "expression": "DIVIDE(SUM(Finance[gross_bookings_cents]),100)",
+            "formatString": "$#,0.00;($#,0.00)",
+            "lineageTag": "1eee7989-549b-58fc-bfde-baeeaf9014e7",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Revenue USD",
+            "expression": "DIVIDE(SUM(Finance[revenue_cents]),100)",
+            "formatString": "$#,0.00;($#,0.00)",
+            "lineageTag": "3107b0df-f92c-50fb-9fd8-80c801c0bb61",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Incentives USD",
+            "expression": "DIVIDE(SUM(Finance[incentive_cents]),100)",
+            "formatString": "$#,0.00;($#,0.00)",
+            "lineageTag": "bd4b220f-02a2-5773-a5e9-58682bfc27c2",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Variable Costs USD",
+            "expression": "DIVIDE(SUM(Finance[variable_cost_cents]),100)",
+            "formatString": "$#,0.00;($#,0.00)",
+            "lineageTag": "2d56032a-695a-55d8-8e83-4a68c3810d5e",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Contribution USD",
+            "expression": "DIVIDE(SUM(Finance[contribution_cents]),100)",
+            "formatString": "$#,0.00;($#,0.00)",
+            "lineageTag": "21566b1a-0b7b-57a2-80f8-7c445bf0599d",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Revenue per Trip USD",
+            "expression": "DIVIDE([Revenue USD],[Total Trips])",
+            "formatString": "$0.00",
+            "lineageTag": "76f12019-d555-5ea1-8bf1-3897c7adaf80",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Contribution per Trip USD",
+            "expression": "DIVIDE([Contribution USD],[Total Trips])",
+            "formatString": "$0.00",
+            "lineageTag": "f9830555-faca-52f2-9e76-40e8e5feefb0",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Contribution Margin",
+            "expression": "DIVIDE([Contribution USD],[Revenue USD])",
+            "formatString": "0.0%",
+            "lineageTag": "9cdec032-794e-5da7-8cb0-e4af2e0192d5",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Contribution Identity Errors",
+            "expression": "COALESCE(COUNTROWS(FILTER(Finance,Finance[revenue_cents]-Finance[incentive_cents]-Finance[variable_cost_cents]<>Finance[contribution_cents])),0)",
+            "formatString": "#,0",
+            "lineageTag": "04c83151-606f-517a-af77-4eecba9ce77f",
+            "displayFolder": "Practice metrics"
+          }
+        ]
+      },
+      {
+        "name": "PairEffects",
+        "lineageTag": "65652bef-d2f7-5369-942d-fe05bfc12cc2",
+        "description": "SIMULATED practice data. No Uber internal data.",
+        "columns": [
+          {
+            "name": "pair_id",
+            "dataType": "int64",
+            "sourceColumn": "pair_id",
+            "lineageTag": "81e7b26a-4f1c-5b18-8b5a-c3bd948a74e2",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "treatment_market",
+            "dataType": "int64",
+            "sourceColumn": "treatment_market",
+            "lineageTag": "f86309db-4d46-596b-9084-6f70086574c9",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "control_market",
+            "dataType": "int64",
+            "sourceColumn": "control_market",
+            "lineageTag": "0ae66e88-831d-5c75-81dc-21f5d0cd4c5a",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "trips_effect",
+            "dataType": "double",
+            "sourceColumn": "trips_effect",
+            "lineageTag": "604aade2-3eb8-5771-94e2-36d8fa1367bc",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "gross_bookings_effect_usd",
+            "dataType": "double",
+            "sourceColumn": "gross_bookings_effect_usd",
+            "lineageTag": "8f3c71da-67dd-5122-b4e4-95a466255830",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "revenue_effect_usd",
+            "dataType": "double",
+            "sourceColumn": "revenue_effect_usd",
+            "lineageTag": "2037b80b-5aa3-5886-9a70-df8508856d03",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "incentive_effect_usd",
+            "dataType": "double",
+            "sourceColumn": "incentive_effect_usd",
+            "lineageTag": "e005adc3-ffd8-5f4c-99c2-0aa02da58218",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "variable_cost_effect_usd",
+            "dataType": "double",
+            "sourceColumn": "variable_cost_effect_usd",
+            "lineageTag": "1352bee1-ed49-5d65-b348-0ed4c861cbce",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "contribution_effect_usd",
+            "dataType": "double",
+            "sourceColumn": "contribution_effect_usd",
+            "lineageTag": "1ed0d45e-2d91-506f-9bae-89eb60f76b13",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "PairEffects",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"\\pair_effects.csv\"), [Delimiter=\",\", Columns=9, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    BlanksToNull = Table.ReplaceValue(Headers, \"\", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),",
+                "    Typed = Table.TransformColumnTypes(BlanksToNull, {{\"pair_id\", Int64.Type}, {\"treatment_market\", Int64.Type}, {\"control_market\", Int64.Type}, {\"trips_effect\", type number}, {\"gross_bookings_effect_usd\", type number}, {\"revenue_effect_usd\", type number}, {\"incentive_effect_usd\", type number}, {\"variable_cost_effect_usd\", type number}, {\"contribution_effect_usd\", type number}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Adjusted Revenue Effect USD",
+            "expression": "AVERAGE(PairEffects[revenue_effect_usd])",
+            "formatString": "$0.00;($0.00)",
+            "lineageTag": "c885e2f8-c649-5b4a-b2fb-5b1a412d293c",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Adjusted Contribution Effect USD",
+            "expression": "AVERAGE(PairEffects[contribution_effect_usd])",
+            "formatString": "$0.00;($0.00)",
+            "lineageTag": "618a3359-d11b-5ce8-9da0-7b0dd85e521d",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Pair Count",
+            "expression": "COUNTROWS(PairEffects)",
+            "formatString": "#,0",
+            "lineageTag": "eb60ad78-e0f0-58b1-b0f4-353b61932a5c",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Revenue Effect SE USD",
+            "expression": "DIVIDE(STDEV.S(PairEffects[revenue_effect_usd]),SQRT([Pair Count]))",
+            "formatString": "$0.00",
+            "lineageTag": "52072289-6a53-5834-ab42-112acb6f5c1a",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Contribution Effect SE USD",
+            "expression": "DIVIDE(STDEV.S(PairEffects[contribution_effect_usd]),SQRT([Pair Count]))",
+            "formatString": "$0.00",
+            "lineageTag": "28648758-be0b-5eea-a519-5fd43d95a587",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Revenue Effect CI Lower USD",
+            "expression": "IF([Pair Count]=24,[Adjusted Revenue Effect USD]-2.068657610*[Revenue Effect SE USD])",
+            "formatString": "$0.00;($0.00)",
+            "lineageTag": "03f81685-f817-54a9-a605-3e53143507f8",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Revenue Effect CI Upper USD",
+            "expression": "IF([Pair Count]=24,[Adjusted Revenue Effect USD]+2.068657610*[Revenue Effect SE USD])",
+            "formatString": "$0.00;($0.00)",
+            "lineageTag": "574ee6ee-495f-5086-a535-0567eaea0450",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Contribution Effect CI Lower USD",
+            "expression": "IF([Pair Count]=24,[Adjusted Contribution Effect USD]-2.068657610*[Contribution Effect SE USD])",
+            "formatString": "$0.00;($0.00)",
+            "lineageTag": "f35be996-3413-5a86-a1fb-42066d004e3c",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Contribution Effect CI Upper USD",
+            "expression": "IF([Pair Count]=24,[Adjusted Contribution Effect USD]+2.068657610*[Contribution Effect SE USD])",
+            "formatString": "$0.00;($0.00)",
+            "lineageTag": "48ccc0ca-1657-593a-a968-9a3a15d10950",
+            "displayFolder": "Practice metrics"
+          }
+        ]
+      },
+      {
+        "name": "EffectSummary",
+        "lineageTag": "d421da84-9e9e-56a0-9785-0e1b27db2556",
+        "description": "SIMULATED practice data. No Uber internal data.",
+        "columns": [
+          {
+            "name": "metric",
+            "dataType": "string",
+            "sourceColumn": "metric",
+            "lineageTag": "85188c80-9769-5049-8ac3-2ca70388685f",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "pairs",
+            "dataType": "int64",
+            "sourceColumn": "pairs",
+            "lineageTag": "e98eee92-71c0-5b73-9c0a-86c46d6f1ace",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "effect_usd",
+            "dataType": "double",
+            "sourceColumn": "effect_usd",
+            "lineageTag": "34f4bd10-1a19-5aac-9bc2-5d0a6c2b12af",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "standard_deviation_usd",
+            "dataType": "double",
+            "sourceColumn": "standard_deviation_usd",
+            "lineageTag": "0fca1e63-0b2d-5a7d-a79b-9e4d446becef",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "standard_error_usd",
+            "dataType": "double",
+            "sourceColumn": "standard_error_usd",
+            "lineageTag": "74979225-2f34-595f-90f2-76c254ff6968",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "ci_lower_usd",
+            "dataType": "double",
+            "sourceColumn": "ci_lower_usd",
+            "lineageTag": "107f3ab9-cb94-5c6c-83f8-8a94f8847a6b",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "ci_upper_usd",
+            "dataType": "double",
+            "sourceColumn": "ci_upper_usd",
+            "lineageTag": "52310ab8-5150-5186-8ebd-2e011f59b39e",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "interval_method",
+            "dataType": "string",
+            "sourceColumn": "interval_method",
+            "lineageTag": "519166c7-f036-53b3-836a-35e5cd0df1fa",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "unit",
+            "dataType": "string",
+            "sourceColumn": "unit",
+            "lineageTag": "1c91b2bc-87f9-5139-81e4-1195abace879",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "EffectSummary",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"\\effect_summary.csv\"), [Delimiter=\",\", Columns=9, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    BlanksToNull = Table.ReplaceValue(Headers, \"\", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),",
+                "    Typed = Table.TransformColumnTypes(BlanksToNull, {{\"metric\", type text}, {\"pairs\", Int64.Type}, {\"effect_usd\", type number}, {\"standard_deviation_usd\", type number}, {\"standard_error_usd\", type number}, {\"ci_lower_usd\", type number}, {\"ci_upper_usd\", type number}, {\"interval_method\", type text}, {\"unit\", type text}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Bridge",
+        "lineageTag": "e9deb817-363f-5897-a6e3-d08f00ccd863",
+        "description": "SIMULATED practice data. No Uber internal data.",
+        "columns": [
+          {
+            "name": "sort_order",
+            "dataType": "int64",
+            "sourceColumn": "sort_order",
+            "lineageTag": "daef75a3-71ae-5e4b-ad03-6d1a92b64db7",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "component",
+            "dataType": "string",
+            "sourceColumn": "component",
+            "lineageTag": "5db2c8a0-fecb-5b62-a517-7316e93df996",
+            "summarizeBy": "none",
+            "sortByColumn": "sort_order"
+          },
+          {
+            "name": "effect_usd",
+            "dataType": "double",
+            "sourceColumn": "effect_usd",
+            "lineageTag": "cdd7bcc2-a409-5996-afb7-cd4afae3dcca",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "is_total",
+            "dataType": "int64",
+            "sourceColumn": "is_total",
+            "lineageTag": "88ff398c-81dd-5f5d-b497-95d57df7881c",
+            "summarizeBy": "sum"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Bridge",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"\\financial_bridge.csv\"), [Delimiter=\",\", Columns=4, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    BlanksToNull = Table.ReplaceValue(Headers, \"\", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),",
+                "    Typed = Table.TransformColumnTypes(BlanksToNull, {{\"sort_order\", Int64.Type}, {\"component\", type text}, {\"effect_usd\", type number}, {\"is_total\", Int64.Type}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "PeriodSummary",
+        "lineageTag": "d4ce91cd-5ca2-506a-af69-7760b37517af",
+        "description": "SIMULATED practice data. No Uber internal data.",
+        "columns": [
+          {
+            "name": "period",
+            "dataType": "string",
+            "sourceColumn": "period",
+            "lineageTag": "6ae8a37b-eb2a-5c79-ba99-f1c49289be1d",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "assigned_group",
+            "dataType": "string",
+            "sourceColumn": "assigned_group",
+            "lineageTag": "fc33ca73-21bf-5f93-a7dc-1d4dfbacf4e3",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "markets",
+            "dataType": "int64",
+            "sourceColumn": "markets",
+            "lineageTag": "1dbe7c85-b1ce-5816-bdfc-118b4ab4b7ee",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "market_days",
+            "dataType": "int64",
+            "sourceColumn": "market_days",
+            "lineageTag": "cb51eadd-bf8e-5a55-bf0a-2b92de1fb8c8",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "trips",
+            "dataType": "int64",
+            "sourceColumn": "trips",
+            "lineageTag": "20d09a8a-fd64-5818-a28e-0132ee0c920c",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "gross_bookings_usd",
+            "dataType": "double",
+            "sourceColumn": "gross_bookings_usd",
+            "lineageTag": "28979630-2dec-5764-974e-b864eb5a2bb0",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "revenue_usd",
+            "dataType": "double",
+            "sourceColumn": "revenue_usd",
+            "lineageTag": "5dd89bec-4507-5827-a87a-6bb0c455d0c3",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "incentive_usd",
+            "dataType": "double",
+            "sourceColumn": "incentive_usd",
+            "lineageTag": "30ccd3a0-e058-5936-9b82-5246f34bbd23",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "variable_cost_usd",
+            "dataType": "double",
+            "sourceColumn": "variable_cost_usd",
+            "lineageTag": "3dac39b8-36e2-55b1-bf86-b1b401a93090",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "contribution_usd",
+            "dataType": "double",
+            "sourceColumn": "contribution_usd",
+            "lineageTag": "1ea25a7c-1949-5c30-84b0-46f8dcb54e59",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "PeriodSummary",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"\\period_summary.csv\"), [Delimiter=\",\", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    BlanksToNull = Table.ReplaceValue(Headers, \"\", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),",
+                "    Typed = Table.TransformColumnTypes(BlanksToNull, {{\"period\", type text}, {\"assigned_group\", type text}, {\"markets\", Int64.Type}, {\"market_days\", Int64.Type}, {\"trips\", Int64.Type}, {\"gross_bookings_usd\", type number}, {\"revenue_usd\", type number}, {\"incentive_usd\", type number}, {\"variable_cost_usd\", type number}, {\"contribution_usd\", type number}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Controls",
+        "lineageTag": "3a08641e-5cb6-5648-be21-e9855e96543b",
+        "description": "SIMULATED practice data. No Uber internal data.",
+        "columns": [
+          {
+            "name": "service_date",
+            "dataType": "dateTime",
+            "sourceColumn": "service_date",
+            "lineageTag": "58629676-4b78-50cc-8262-e7d87fb8a33e",
+            "summarizeBy": "none",
+            "formatString": "yyyy-MM-dd"
+          },
+          {
+            "name": "cluster_id",
+            "dataType": "int64",
+            "sourceColumn": "cluster_id",
+            "lineageTag": "5d40f615-6c95-5077-8d9a-3a80ecfe9394",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "revenue_delta_cents",
+            "dataType": "int64",
+            "sourceColumn": "revenue_delta_cents",
+            "lineageTag": "e4f09d55-de4f-5e1d-8713-349985db7e35",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "incentive_delta_cents",
+            "dataType": "int64",
+            "sourceColumn": "incentive_delta_cents",
+            "lineageTag": "97295a67-b9b5-5e84-ba07-ce3f0cfe80b2",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "cost_delta_cents",
+            "dataType": "int64",
+            "sourceColumn": "cost_delta_cents",
+            "lineageTag": "1c5190dd-cffa-537c-bc6a-758576eee9ed",
+            "summarizeBy": "sum"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Controls",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"\\controls.csv\"), [Delimiter=\",\", Columns=5, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    BlanksToNull = Table.ReplaceValue(Headers, \"\", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),",
+                "    Typed = Table.TransformColumnTypes(BlanksToNull, {{\"service_date\", type date}, {\"cluster_id\", Int64.Type}, {\"revenue_delta_cents\", Int64.Type}, {\"incentive_delta_cents\", Int64.Type}, {\"cost_delta_cents\", Int64.Type}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Reconciliation Absolute Delta USD",
+            "expression": "DIVIDE(SUMX(Controls,ABS(Controls[revenue_delta_cents])+ABS(Controls[incentive_delta_cents])+ABS(Controls[cost_delta_cents])),100)",
+            "formatString": "$0.00",
+            "lineageTag": "269e0d9b-6787-5825-9df8-2d1bab413b9e",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Reconciliation Exception Rows",
+            "expression": "COALESCE(COUNTROWS(FILTER(Controls,Controls[revenue_delta_cents]<>0 || Controls[incentive_delta_cents]<>0 || Controls[cost_delta_cents]<>0)),0)",
+            "formatString": "#,0",
+            "lineageTag": "6ef0bcf1-2eed-58ca-a5b5-94063d5692a2",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Imported Control Rows",
+            "expression": "COUNTROWS(Controls)",
+            "formatString": "#,0",
+            "lineageTag": "fd276410-b3d3-57b8-af47-f098fb2f4dcd",
+            "displayFolder": "Practice metrics"
+          }
+        ]
+      },
+      {
+        "name": "Quarantine",
+        "lineageTag": "6c50aed9-678f-58b0-adda-33776d91b66f",
+        "description": "SIMULATED practice data. No Uber internal data.",
+        "columns": [
+          {
+            "name": "event_id",
+            "dataType": "string",
+            "sourceColumn": "event_id",
+            "lineageTag": "a41426e6-308d-5484-a889-c4b6c579660b",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "trip_id",
+            "dataType": "string",
+            "sourceColumn": "trip_id",
+            "lineageTag": "9afa83fb-c920-5839-9e92-7296a4f0f35a",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "cluster_id",
+            "dataType": "int64",
+            "sourceColumn": "cluster_id",
+            "lineageTag": "41993863-4f66-53ea-b48c-b85e5557d9a2",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "service_date",
+            "dataType": "dateTime",
+            "sourceColumn": "service_date",
+            "lineageTag": "1d972cf6-2392-5fc6-b626-e4e367e80b1e",
+            "summarizeBy": "none",
+            "formatString": "yyyy-MM-dd"
+          },
+          {
+            "name": "fare_cents",
+            "dataType": "int64",
+            "sourceColumn": "fare_cents",
+            "lineageTag": "46334feb-7566-5980-90bd-0398f3aaaa3a",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "primary_reason",
+            "dataType": "string",
+            "sourceColumn": "primary_reason",
+            "lineageTag": "33f1eb5c-bc47-58f8-9bf1-ce7d1e0d9ee1",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "rule_violations",
+            "dataType": "int64",
+            "sourceColumn": "rule_violations",
+            "lineageTag": "9cd3b751-ffd1-5721-9cb6-9784a812b1a9",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "resolution",
+            "dataType": "string",
+            "sourceColumn": "resolution",
+            "lineageTag": "a2a6791d-5179-534b-9394-b835dcb389a1",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Quarantine",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"\\quarantine.csv\"), [Delimiter=\",\", Columns=8, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    BlanksToNull = Table.ReplaceValue(Headers, \"\", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),",
+                "    Typed = Table.TransformColumnTypes(BlanksToNull, {{\"event_id\", type text}, {\"trip_id\", type text}, {\"cluster_id\", Int64.Type}, {\"service_date\", type date}, {\"fare_cents\", Int64.Type}, {\"primary_reason\", type text}, {\"rule_violations\", Int64.Type}, {\"resolution\", type text}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Quarantined Records",
+            "expression": "COUNTROWS(Quarantine)",
+            "formatString": "#,0",
+            "lineageTag": "32733af0-b4d0-5e4c-834a-275dbf4b72d6",
+            "displayFolder": "Practice metrics"
+          }
+        ]
+      },
+      {
+        "name": "QualityChecks",
+        "lineageTag": "a9965720-ec9c-5dbd-a3bc-1271549a525d",
+        "description": "SIMULATED practice data. No Uber internal data.",
+        "columns": [
+          {
+            "name": "check",
+            "dataType": "string",
+            "sourceColumn": "check",
+            "lineageTag": "609f072d-44ee-55ee-9a21-c02d47ca6f77",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "observed",
+            "dataType": "int64",
+            "sourceColumn": "observed",
+            "lineageTag": "bfe0ad79-bede-534f-a27f-209c862ec2ac",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "expected",
+            "dataType": "int64",
+            "sourceColumn": "expected",
+            "lineageTag": "5aed99e4-8252-58f8-a327-08f8000d1d4b",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "status",
+            "dataType": "string",
+            "sourceColumn": "status",
+            "lineageTag": "93052b07-d336-55ae-a5f4-b7cb5907b5d2",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "QualityChecks",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"\\quality_checks.csv\"), [Delimiter=\",\", Columns=4, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    BlanksToNull = Table.ReplaceValue(Headers, \"\", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),",
+                "    Typed = Table.TransformColumnTypes(BlanksToNull, {{\"check\", type text}, {\"observed\", Int64.Type}, {\"expected\", Int64.Type}, {\"status\", type text}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Backtest",
+        "lineageTag": "1699de70-776f-58e9-9435-f00b19211bbb",
+        "description": "SIMULATED practice data. No Uber internal data.",
+        "columns": [
+          {
+            "name": "forecast_date",
+            "dataType": "dateTime",
+            "sourceColumn": "forecast_date",
+            "lineageTag": "88adb076-1272-5fee-aa97-1c3c7a3f27dd",
+            "summarizeBy": "none",
+            "formatString": "yyyy-MM-dd"
+          },
+          {
+            "name": "assigned_group",
+            "dataType": "string",
+            "sourceColumn": "assigned_group",
+            "lineageTag": "de847ea3-257a-556d-914c-7065896c5ee2",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "cutoff_date",
+            "dataType": "dateTime",
+            "sourceColumn": "cutoff_date",
+            "lineageTag": "88fd4f14-f2bc-5745-aef0-5dbdfac6f015",
+            "summarizeBy": "none",
+            "formatString": "yyyy-MM-dd"
+          },
+          {
+            "name": "estimated_trips",
+            "dataType": "double",
+            "sourceColumn": "estimated_trips",
+            "lineageTag": "f5c7897e-028a-500f-b736-e48403de6dd5",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "estimated_revenue_per_trip_usd",
+            "dataType": "double",
+            "sourceColumn": "estimated_revenue_per_trip_usd",
+            "lineageTag": "eff8ede8-e3cd-5e6c-b8a3-e98597be0438",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "estimated_incentive_per_trip_usd",
+            "dataType": "double",
+            "sourceColumn": "estimated_incentive_per_trip_usd",
+            "lineageTag": "949d274b-ca2f-5e57-8ed6-6987bf8ee283",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "estimated_variable_cost_per_trip_usd",
+            "dataType": "double",
+            "sourceColumn": "estimated_variable_cost_per_trip_usd",
+            "lineageTag": "7d45704a-b059-5226-9c7f-54cef9514dd1",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "predicted_revenue_usd",
+            "dataType": "double",
+            "sourceColumn": "predicted_revenue_usd",
+            "lineageTag": "70ce04d6-187c-56b6-a8de-d2f83e4731a7",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "predicted_incentive_usd",
+            "dataType": "double",
+            "sourceColumn": "predicted_incentive_usd",
+            "lineageTag": "8e00e46c-1abc-54a2-a0da-6cedd4f3038e",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "predicted_variable_cost_usd",
+            "dataType": "double",
+            "sourceColumn": "predicted_variable_cost_usd",
+            "lineageTag": "992af8de-488c-532b-8a18-eefa70ee3097",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "predicted_contribution_usd",
+            "dataType": "double",
+            "sourceColumn": "predicted_contribution_usd",
+            "lineageTag": "f2a12157-4aba-555f-a6cc-700f84e5d258",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "actual_trips",
+            "dataType": "int64",
+            "sourceColumn": "actual_trips",
+            "lineageTag": "7bf05fa4-a162-5696-a870-f6c00a906abd",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "actual_revenue_usd",
+            "dataType": "double",
+            "sourceColumn": "actual_revenue_usd",
+            "lineageTag": "1606e2f4-6486-539d-9438-aa4fcaa212e6",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "actual_contribution_usd",
+            "dataType": "double",
+            "sourceColumn": "actual_contribution_usd",
+            "lineageTag": "765217fb-8533-5931-b947-0f5623798488",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Backtest",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"\\forecast_backtest.csv\"), [Delimiter=\",\", Columns=14, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    BlanksToNull = Table.ReplaceValue(Headers, \"\", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),",
+                "    Typed = Table.TransformColumnTypes(BlanksToNull, {{\"forecast_date\", type date}, {\"assigned_group\", type text}, {\"cutoff_date\", type date}, {\"estimated_trips\", type number}, {\"estimated_revenue_per_trip_usd\", type number}, {\"estimated_incentive_per_trip_usd\", type number}, {\"estimated_variable_cost_per_trip_usd\", type number}, {\"predicted_revenue_usd\", type number}, {\"predicted_incentive_usd\", type number}, {\"predicted_variable_cost_usd\", type number}, {\"predicted_contribution_usd\", type number}, {\"actual_trips\", Int64.Type}, {\"actual_revenue_usd\", type number}, {\"actual_contribution_usd\", type number}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Backtest Predicted Revenue USD",
+            "expression": "SUM(Backtest[predicted_revenue_usd])",
+            "formatString": "$#,0.00",
+            "lineageTag": "f48ba494-82ff-5f07-b2e5-0fbd7b612111",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Backtest Actual Revenue USD",
+            "expression": "SUM(Backtest[actual_revenue_usd])",
+            "formatString": "$#,0.00",
+            "lineageTag": "0cd8d473-44bb-5991-8357-5b5b141ce086",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Backtest Predicted Contribution USD",
+            "expression": "SUM(Backtest[predicted_contribution_usd])",
+            "formatString": "$#,0.00",
+            "lineageTag": "a81c859d-5c1d-5f03-b1ab-94930f35a831",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Backtest Actual Contribution USD",
+            "expression": "SUM(Backtest[actual_contribution_usd])",
+            "formatString": "$#,0.00",
+            "lineageTag": "d22be643-1588-513a-889a-2ecbb849e5e2",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Revenue Forecast MAE USD",
+            "expression": "AVERAGEX(VALUES(Backtest[forecast_date]),ABS(CALCULATE([Backtest Actual Revenue USD])-CALCULATE([Backtest Predicted Revenue USD])))",
+            "formatString": "$0.00",
+            "lineageTag": "f5540034-0153-5c46-91a5-5b8a91af5e40",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Revenue Forecast WAPE",
+            "expression": "DIVIDE(SUMX(VALUES(Backtest[forecast_date]),ABS(CALCULATE([Backtest Actual Revenue USD])-CALCULATE([Backtest Predicted Revenue USD]))),SUMX(VALUES(Backtest[forecast_date]),ABS(CALCULATE([Backtest Actual Revenue USD]))))",
+            "formatString": "0.00%",
+            "lineageTag": "176cdcb4-4d15-564d-8e81-55623c69b4d4",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Contribution Forecast MAE USD",
+            "expression": "AVERAGEX(VALUES(Backtest[forecast_date]),ABS(CALCULATE([Backtest Actual Contribution USD])-CALCULATE([Backtest Predicted Contribution USD])))",
+            "formatString": "$0.00",
+            "lineageTag": "60c74a03-704a-5afd-a996-2284dce5f088",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Contribution Forecast WAPE",
+            "expression": "DIVIDE(SUMX(VALUES(Backtest[forecast_date]),ABS(CALCULATE([Backtest Actual Contribution USD])-CALCULATE([Backtest Predicted Contribution USD]))),SUMX(VALUES(Backtest[forecast_date]),ABS(CALCULATE([Backtest Actual Contribution USD]))))",
+            "formatString": "0.00%",
+            "lineageTag": "3bce4176-df0a-594d-a0e6-66c0b9a0a646",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Revenue Forecast Mean Signed Error USD",
+            "expression": "AVERAGEX(VALUES(Backtest[forecast_date]),CALCULATE([Backtest Actual Revenue USD])-CALCULATE([Backtest Predicted Revenue USD]))",
+            "formatString": "$0.00;($0.00)",
+            "lineageTag": "fb2f4e5e-d979-5294-b177-e4b3137901ee",
+            "displayFolder": "Forecast diagnostics"
+          },
+          {
+            "name": "Contribution Forecast Mean Signed Error USD",
+            "expression": "AVERAGEX(VALUES(Backtest[forecast_date]),CALCULATE([Backtest Actual Contribution USD])-CALCULATE([Backtest Predicted Contribution USD]))",
+            "formatString": "$0.00;($0.00)",
+            "lineageTag": "b7bd6305-3899-5f4e-9929-2b0e9797e56f",
+            "displayFolder": "Forecast diagnostics"
+          }
+        ]
+      },
+      {
+        "name": "Future",
+        "lineageTag": "bcdb499e-6c5a-56f6-9d6b-d530087a6367",
+        "description": "SIMULATED practice data. No Uber internal data.",
+        "columns": [
+          {
+            "name": "forecast_date",
+            "dataType": "dateTime",
+            "sourceColumn": "forecast_date",
+            "lineageTag": "eceea7a4-d36b-527c-80b7-42b8e6ebe6c0",
+            "summarizeBy": "none",
+            "formatString": "yyyy-MM-dd"
+          },
+          {
+            "name": "assigned_group",
+            "dataType": "string",
+            "sourceColumn": "assigned_group",
+            "lineageTag": "933a3ef9-43cc-528d-943e-65353d1e5e37",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "cutoff_date",
+            "dataType": "dateTime",
+            "sourceColumn": "cutoff_date",
+            "lineageTag": "b0bde569-d47c-5cc3-9fd4-a820259a34e8",
+            "summarizeBy": "none",
+            "formatString": "yyyy-MM-dd"
+          },
+          {
+            "name": "estimated_trips",
+            "dataType": "double",
+            "sourceColumn": "estimated_trips",
+            "lineageTag": "e34ea020-e90c-5d61-a7d8-c210e8cb4f10",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "estimated_revenue_per_trip_usd",
+            "dataType": "double",
+            "sourceColumn": "estimated_revenue_per_trip_usd",
+            "lineageTag": "420d746f-819e-5aa9-9ba9-e79e7ced30ef",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "estimated_incentive_per_trip_usd",
+            "dataType": "double",
+            "sourceColumn": "estimated_incentive_per_trip_usd",
+            "lineageTag": "bec7f8c7-1083-55d1-bc7b-6ac316a80825",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "estimated_variable_cost_per_trip_usd",
+            "dataType": "double",
+            "sourceColumn": "estimated_variable_cost_per_trip_usd",
+            "lineageTag": "cb6d8206-4e1c-5f3a-b831-d83530e8717f",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "predicted_revenue_usd",
+            "dataType": "double",
+            "sourceColumn": "predicted_revenue_usd",
+            "lineageTag": "8e2d9ab5-a803-55e0-956d-39b113ed5d01",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "predicted_incentive_usd",
+            "dataType": "double",
+            "sourceColumn": "predicted_incentive_usd",
+            "lineageTag": "24407e1c-366c-5e27-b4e9-37fc1eef80c4",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "predicted_variable_cost_usd",
+            "dataType": "double",
+            "sourceColumn": "predicted_variable_cost_usd",
+            "lineageTag": "6e79410b-ded2-5e4a-abac-d6aab27244e1",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "predicted_contribution_usd",
+            "dataType": "double",
+            "sourceColumn": "predicted_contribution_usd",
+            "lineageTag": "0fd42704-ed97-516c-b96c-f49549ddeccf",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "actual_trips",
+            "dataType": "int64",
+            "sourceColumn": "actual_trips",
+            "lineageTag": "bebf1821-1245-5ec2-b5d9-76943580b2a3",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "actual_revenue_usd",
+            "dataType": "double",
+            "sourceColumn": "actual_revenue_usd",
+            "lineageTag": "aa350a1d-8d48-5519-87c1-cbd8ba42e43f",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          },
+          {
+            "name": "actual_contribution_usd",
+            "dataType": "double",
+            "sourceColumn": "actual_contribution_usd",
+            "lineageTag": "ae18664a-951a-599c-93cb-c35a3f1ffd55",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00;($#,0.00)"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Future",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"\\forecast_future.csv\"), [Delimiter=\",\", Columns=14, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    BlanksToNull = Table.ReplaceValue(Headers, \"\", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),",
+                "    Typed = Table.TransformColumnTypes(BlanksToNull, {{\"forecast_date\", type date}, {\"assigned_group\", type text}, {\"cutoff_date\", type date}, {\"estimated_trips\", type number}, {\"estimated_revenue_per_trip_usd\", type number}, {\"estimated_incentive_per_trip_usd\", type number}, {\"estimated_variable_cost_per_trip_usd\", type number}, {\"predicted_revenue_usd\", type number}, {\"predicted_incentive_usd\", type number}, {\"predicted_variable_cost_usd\", type number}, {\"predicted_contribution_usd\", type number}, {\"actual_trips\", Int64.Type}, {\"actual_revenue_usd\", type number}, {\"actual_contribution_usd\", type number}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Next Week Revenue USD",
+            "expression": "SUM(Future[predicted_revenue_usd])",
+            "formatString": "$#,0.00",
+            "lineageTag": "d2a837e5-ee19-5833-90d6-dc856d33e31d",
+            "displayFolder": "Practice metrics"
+          },
+          {
+            "name": "Next Week Contribution USD",
+            "expression": "SUM(Future[predicted_contribution_usd])",
+            "formatString": "$#,0.00",
+            "lineageTag": "22f54805-4e5c-59d0-83aa-42ef2040d315",
+            "displayFolder": "Practice metrics"
+          }
+        ]
+      },
+      {
+        "name": "Scenarios",
+        "description": "SIMULATED scenario assumptions, not measured policy responses. USD per market over 28 days.",
+        "lineageTag": "7a102db9-7b0d-5e60-b3df-3cc9bfbb5547",
+        "columns": [
+          {
+            "name": "scenario_id",
+            "dataType": "string",
+            "sourceColumn": "scenario_id",
+            "summarizeBy": "none",
+            "lineageTag": "8353c790-86fa-5cc7-81ef-b8cd31b620bf"
+          },
+          {
+            "name": "incentive_usd",
+            "dataType": "double",
+            "sourceColumn": "incentive_usd",
+            "summarizeBy": "none",
+            "lineageTag": "6098eda3-b885-54ba-9e59-9f61a7eeeb5e",
+            "formatString": "$0.00;($0.00)"
+          },
+          {
+            "name": "assumed_trip_lift",
+            "dataType": "double",
+            "sourceColumn": "assumed_trip_lift",
+            "summarizeBy": "none",
+            "lineageTag": "6c2a7942-76a5-570e-9824-41efe22e1e40",
+            "formatString": "0.00%"
+          },
+          {
+            "name": "required_trip_lift",
+            "dataType": "double",
+            "sourceColumn": "required_trip_lift",
+            "summarizeBy": "none",
+            "lineageTag": "51bab47e-42ed-526a-9c2a-0a1427e68ca1",
+            "formatString": "0.00%"
+          },
+          {
+            "name": "trip_lift_cushion_pp",
+            "dataType": "double",
+            "sourceColumn": "trip_lift_cushion_pp",
+            "summarizeBy": "none",
+            "lineageTag": "4dfc8f65-4eac-5a2e-baf7-39999b019924",
+            "formatString": "0.00"
+          },
+          {
+            "name": "baseline_trips",
+            "dataType": "double",
+            "sourceColumn": "baseline_trips",
+            "summarizeBy": "none",
+            "lineageTag": "486b437c-4dc6-56aa-b410-e4d4c1123930",
+            "formatString": "0.00"
+          },
+          {
+            "name": "estimated_trips",
+            "dataType": "double",
+            "sourceColumn": "estimated_trips",
+            "summarizeBy": "none",
+            "lineageTag": "ee548ba7-c9bf-5875-ad72-c1387e25817c",
+            "formatString": "0.00"
+          },
+          {
+            "name": "predicted_revenue_usd",
+            "dataType": "double",
+            "sourceColumn": "predicted_revenue_usd",
+            "summarizeBy": "none",
+            "lineageTag": "8f1472e9-6261-5bef-a051-22c38cedc0fe",
+            "formatString": "$0.00;($0.00)"
+          },
+          {
+            "name": "predicted_incentive_usd",
+            "dataType": "double",
+            "sourceColumn": "predicted_incentive_usd",
+            "summarizeBy": "none",
+            "lineageTag": "970fe053-9020-5b12-a297-c1cb7c7ef780",
+            "formatString": "$0.00;($0.00)"
+          },
+          {
+            "name": "predicted_variable_cost_usd",
+            "dataType": "double",
+            "sourceColumn": "predicted_variable_cost_usd",
+            "summarizeBy": "none",
+            "lineageTag": "ba744e8b-79b3-5c0c-af6c-21b3caefd519",
+            "formatString": "$0.00;($0.00)"
+          },
+          {
+            "name": "predicted_contribution_usd",
+            "dataType": "double",
+            "sourceColumn": "predicted_contribution_usd",
+            "summarizeBy": "none",
+            "lineageTag": "ff09ecf0-de0d-5811-addb-338c59a5abe6",
+            "formatString": "$0.00;($0.00)"
+          },
+          {
+            "name": "baseline_contribution_usd",
+            "dataType": "double",
+            "sourceColumn": "baseline_contribution_usd",
+            "summarizeBy": "none",
+            "lineageTag": "fef4048a-aa36-5308-a327-fb0b1a68444a",
+            "formatString": "$0.00;($0.00)"
+          },
+          {
+            "name": "incremental_contribution_usd",
+            "dataType": "double",
+            "sourceColumn": "incremental_contribution_usd",
+            "summarizeBy": "none",
+            "lineageTag": "a1cd0426-8707-51fb-89f5-51b348c76739",
+            "formatString": "$0.00;($0.00)"
+          },
+          {
+            "name": "scenario_result",
+            "dataType": "string",
+            "sourceColumn": "scenario_result",
+            "summarizeBy": "none",
+            "lineageTag": "5af31858-6f0e-5ebe-ae90-78e5046db828"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Scenarios",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"\\scenarios.csv\"), [Delimiter=\",\", Columns=14, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {{\"scenario_id\", type text}, {\"incentive_usd\", type number}, {\"assumed_trip_lift\", type number}, {\"required_trip_lift\", type number}, {\"trip_lift_cushion_pp\", type number}, {\"baseline_trips\", type number}, {\"estimated_trips\", type number}, {\"predicted_revenue_usd\", type number}, {\"predicted_incentive_usd\", type number}, {\"predicted_variable_cost_usd\", type number}, {\"predicted_contribution_usd\", type number}, {\"baseline_contribution_usd\", type number}, {\"incremental_contribution_usd\", type number}, {\"scenario_result\", type text}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Scenario Incremental Contribution USD",
+            "expression": "SELECTEDVALUE(Scenarios[incremental_contribution_usd])",
+            "formatString": "$0.00;($0.00)",
+            "lineageTag": "a43fe828-702b-510e-90a9-4657891606ac",
+            "displayFolder": "Scenario planning"
+          },
+          {
+            "name": "Scenario Contribution USD",
+            "expression": "SELECTEDVALUE(Scenarios[predicted_contribution_usd])",
+            "formatString": "$0.00;($0.00)",
+            "lineageTag": "f0f96980-1bf2-5ebf-bda1-b4acb1cd51c4",
+            "displayFolder": "Scenario planning"
+          },
+          {
+            "name": "Scenario Baseline Contribution USD",
+            "expression": "MAX(Scenarios[baseline_contribution_usd])",
+            "formatString": "$0.00",
+            "lineageTag": "8a9a3162-d699-5f2e-8930-66a12f3d17bb",
+            "displayFolder": "Scenario planning"
+          },
+          {
+            "name": "Candidate Incentive USD",
+            "expression": "0.60",
+            "formatString": "$0.00",
+            "lineageTag": "ac440515-ca91-5fd5-b963-1f8c5ec53d41",
+            "displayFolder": "Scenario planning"
+          },
+          {
+            "name": "Candidate Required Trip Lift",
+            "expression": "MAXX(FILTER(Thresholds,Thresholds[incentive_usd]=0.60),Thresholds[required_trip_lift])",
+            "formatString": "0.00%",
+            "lineageTag": "1f27b936-80ab-5cc4-9d08-8a464c28bc26",
+            "displayFolder": "Scenario planning"
+          },
+          {
+            "name": "Scenario Trip Lift Cushion PP",
+            "expression": "SELECTEDVALUE(Scenarios[trip_lift_cushion_pp])",
+            "formatString": "0.00",
+            "lineageTag": "a7d70da3-fde5-5d61-8b8e-f38f08073541",
+            "displayFolder": "Scenario planning"
+          },
+          {
+            "name": "Candidate Conclusion",
+            "expression": "\"$0.60 requires about 4.15% additional trips to preserve baseline contribution. Required response, not a prediction.\"",
+            "formatString": "",
+            "lineageTag": "6f99ea27-79fe-51b5-8e55-47f7b2336e7c",
+            "displayFolder": "Scenario planning"
+          }
+        ]
+      },
+      {
+        "name": "Thresholds",
+        "description": "SIMULATED scenario assumptions, not measured policy responses. USD per market over 28 days.",
+        "lineageTag": "32da4fa3-8736-5d21-8b8c-e9ac32531814",
+        "columns": [
+          {
+            "name": "incentive_usd",
+            "dataType": "double",
+            "sourceColumn": "incentive_usd",
+            "summarizeBy": "none",
+            "lineageTag": "1c080627-000a-5aa9-b947-7ca2dfaf4fac",
+            "formatString": "$0.00;($0.00)"
+          },
+          {
+            "name": "required_trip_lift",
+            "dataType": "double",
+            "sourceColumn": "required_trip_lift",
+            "summarizeBy": "none",
+            "lineageTag": "c4214d73-d44b-54d1-b7e5-4969296b8904",
+            "formatString": "0.00%"
+          },
+          {
+            "name": "baseline_incentive_usd",
+            "dataType": "double",
+            "sourceColumn": "baseline_incentive_usd",
+            "summarizeBy": "none",
+            "lineageTag": "890f46a4-be08-5a2b-9725-08d1d79cb90f",
+            "formatString": "$0.00;($0.00)"
+          },
+          {
+            "name": "revenue_per_trip_usd",
+            "dataType": "double",
+            "sourceColumn": "revenue_per_trip_usd",
+            "summarizeBy": "none",
+            "lineageTag": "857824b4-18df-58e1-a7a6-f96fc76a017e",
+            "formatString": "$0.00;($0.00)"
+          },
+          {
+            "name": "variable_cost_per_trip_usd",
+            "dataType": "double",
+            "sourceColumn": "variable_cost_per_trip_usd",
+            "summarizeBy": "none",
+            "lineageTag": "fef6d53e-f5da-5df5-915e-b2f4880b251d",
+            "formatString": "$0.00;($0.00)"
+          },
+          {
+            "name": "new_contribution_per_trip_usd",
+            "dataType": "double",
+            "sourceColumn": "new_contribution_per_trip_usd",
+            "summarizeBy": "none",
+            "lineageTag": "1218cab1-be52-53e9-8965-80bd7f9d3381",
+            "formatString": "$0.00;($0.00)"
+          },
+          {
+            "name": "baseline_contribution_usd",
+            "dataType": "double",
+            "sourceColumn": "baseline_contribution_usd",
+            "summarizeBy": "none",
+            "lineageTag": "20436fdd-abbb-5254-af1d-90bc4094170c",
+            "formatString": "$0.00;($0.00)"
+          },
+          {
+            "name": "unit",
+            "dataType": "string",
+            "sourceColumn": "unit",
+            "summarizeBy": "none",
+            "lineageTag": "dc6f926d-8b1d-56bd-8e71-92ef6d3045b8"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Thresholds",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"\\breakeven_thresholds.csv\"), [Delimiter=\",\", Columns=8, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {{\"incentive_usd\", type number}, {\"required_trip_lift\", type number}, {\"baseline_incentive_usd\", type number}, {\"revenue_per_trip_usd\", type number}, {\"variable_cost_per_trip_usd\", type number}, {\"new_contribution_per_trip_usd\", type number}, {\"baseline_contribution_usd\", type number}, {\"unit\", type text}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ],
+        "measures": []
+      }
+    ],
+    "relationships": [
+      {
+        "name": "e2547500-54ca-577b-9592-82428d0c157c",
+        "fromTable": "Finance",
+        "fromColumn": "cluster_id",
+        "toTable": "DimMarket",
+        "toColumn": "cluster_id",
+        "fromCardinality": "many",
+        "toCardinality": "one",
+        "crossFilteringBehavior": "oneDirection",
+        "isActive": true
+      },
+      {
+        "name": "7490e58f-d28f-5f54-b929-a088c9af7a24",
+        "fromTable": "Finance",
+        "fromColumn": "service_date",
+        "toTable": "DimDate",
+        "toColumn": "date",
+        "fromCardinality": "many",
+        "toCardinality": "one",
+        "crossFilteringBehavior": "oneDirection",
+        "isActive": true
+      },
+      {
+        "name": "56ddc7f8-8a49-5523-a0ce-7dd43eca4711",
+        "fromTable": "Controls",
+        "fromColumn": "cluster_id",
+        "toTable": "DimMarket",
+        "toColumn": "cluster_id",
+        "fromCardinality": "many",
+        "toCardinality": "one",
+        "crossFilteringBehavior": "oneDirection",
+        "isActive": true
+      },
+      {
+        "name": "0b69e65a-3991-58ca-ab05-c0a3c474bd3d",
+        "fromTable": "Controls",
+        "fromColumn": "service_date",
+        "toTable": "DimDate",
+        "toColumn": "date",
+        "fromCardinality": "many",
+        "toCardinality": "one",
+        "crossFilteringBehavior": "oneDirection",
+        "isActive": true
+      }
+    ],
+    "annotations": [
+      {
+        "name": "__PBI_TimeIntelligenceEnabled",
+        "value": "0"
+      },
+      {
+        "name": "SimulationWarning",
+        "value": "SIMULATED practice data and accounting assumptions. No Uber internal data."
+      }
+    ]
+  }
+}

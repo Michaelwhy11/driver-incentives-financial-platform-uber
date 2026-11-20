@@ -1,0 +1,155 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "quarantinedetail",
+  "position": {
+    "x": 825,
+    "y": 235,
+    "width": 423,
+    "height": 275,
+    "z": 0,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "drillFilterOtherVisuals": false,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Quarantine"
+                    }
+                  },
+                  "Property": "event_id"
+                }
+              },
+              "queryRef": "Quarantine.event_id",
+              "nativeQueryRef": "event_id",
+              "displayName": "event id"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Quarantine"
+                    }
+                  },
+                  "Property": "fare_cents"
+                }
+              },
+              "queryRef": "Quarantine.fare_cents",
+              "nativeQueryRef": "fare_cents",
+              "displayName": "fare cents"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Quarantine"
+                    }
+                  },
+                  "Property": "primary_reason"
+                }
+              },
+              "queryRef": "Quarantine.primary_reason",
+              "nativeQueryRef": "primary_reason",
+              "displayName": "primary reason"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Quarantine"
+                    }
+                  },
+                  "Property": "rule_violations"
+                }
+              },
+              "queryRef": "Quarantine.rule_violations",
+              "nativeQueryRef": "rule_violations",
+              "displayName": "rule violations"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Known rejected source record'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#111111'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

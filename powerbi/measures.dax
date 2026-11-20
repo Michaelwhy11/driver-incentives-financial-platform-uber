@@ -1,0 +1,125 @@
+-- Table: Finance
+Total Trips = SUM(Finance[trips])
+
+-- Table: Finance
+Gross Bookings USD = DIVIDE(SUM(Finance[gross_bookings_cents]),100)
+
+-- Table: Finance
+Revenue USD = DIVIDE(SUM(Finance[revenue_cents]),100)
+
+-- Table: Finance
+Incentives USD = DIVIDE(SUM(Finance[incentive_cents]),100)
+
+-- Table: Finance
+Variable Costs USD = DIVIDE(SUM(Finance[variable_cost_cents]),100)
+
+-- Table: Finance
+Contribution USD = DIVIDE(SUM(Finance[contribution_cents]),100)
+
+-- Table: Finance
+Revenue per Trip USD = DIVIDE([Revenue USD],[Total Trips])
+
+-- Table: Finance
+Contribution per Trip USD = DIVIDE([Contribution USD],[Total Trips])
+
+-- Table: Finance
+Contribution Margin = DIVIDE([Contribution USD],[Revenue USD])
+
+-- Table: Finance
+Contribution Identity Errors = COALESCE(COUNTROWS(FILTER(Finance,Finance[revenue_cents]-Finance[incentive_cents]-Finance[variable_cost_cents]<>Finance[contribution_cents])),0)
+
+-- Table: PairEffects
+Adjusted Revenue Effect USD = AVERAGE(PairEffects[revenue_effect_usd])
+
+-- Table: PairEffects
+Adjusted Contribution Effect USD = AVERAGE(PairEffects[contribution_effect_usd])
+
+-- Table: PairEffects
+Pair Count = COUNTROWS(PairEffects)
+
+-- Table: PairEffects
+Revenue Effect SE USD = DIVIDE(STDEV.S(PairEffects[revenue_effect_usd]),SQRT([Pair Count]))
+
+-- Table: PairEffects
+Contribution Effect SE USD = DIVIDE(STDEV.S(PairEffects[contribution_effect_usd]),SQRT([Pair Count]))
+
+-- Table: PairEffects
+Revenue Effect CI Lower USD = IF([Pair Count]=24,[Adjusted Revenue Effect USD]-2.068657610*[Revenue Effect SE USD])
+
+-- Table: PairEffects
+Revenue Effect CI Upper USD = IF([Pair Count]=24,[Adjusted Revenue Effect USD]+2.068657610*[Revenue Effect SE USD])
+
+-- Table: PairEffects
+Contribution Effect CI Lower USD = IF([Pair Count]=24,[Adjusted Contribution Effect USD]-2.068657610*[Contribution Effect SE USD])
+
+-- Table: PairEffects
+Contribution Effect CI Upper USD = IF([Pair Count]=24,[Adjusted Contribution Effect USD]+2.068657610*[Contribution Effect SE USD])
+
+-- Table: Controls
+Reconciliation Absolute Delta USD = DIVIDE(SUMX(Controls,ABS(Controls[revenue_delta_cents])+ABS(Controls[incentive_delta_cents])+ABS(Controls[cost_delta_cents])),100)
+
+-- Table: Controls
+Reconciliation Exception Rows = COALESCE(COUNTROWS(FILTER(Controls,Controls[revenue_delta_cents]<>0 || Controls[incentive_delta_cents]<>0 || Controls[cost_delta_cents]<>0)),0)
+
+-- Table: Controls
+Imported Control Rows = COUNTROWS(Controls)
+
+-- Table: Quarantine
+Quarantined Records = COUNTROWS(Quarantine)
+
+-- Table: Backtest
+Backtest Predicted Revenue USD = SUM(Backtest[predicted_revenue_usd])
+
+-- Table: Backtest
+Backtest Actual Revenue USD = SUM(Backtest[actual_revenue_usd])
+
+-- Table: Backtest
+Backtest Predicted Contribution USD = SUM(Backtest[predicted_contribution_usd])
+
+-- Table: Backtest
+Backtest Actual Contribution USD = SUM(Backtest[actual_contribution_usd])
+
+-- Table: Backtest
+Revenue Forecast MAE USD = AVERAGEX(VALUES(Backtest[forecast_date]),ABS(CALCULATE([Backtest Actual Revenue USD])-CALCULATE([Backtest Predicted Revenue USD])))
+
+-- Table: Backtest
+Revenue Forecast WAPE = DIVIDE(SUMX(VALUES(Backtest[forecast_date]),ABS(CALCULATE([Backtest Actual Revenue USD])-CALCULATE([Backtest Predicted Revenue USD]))),SUMX(VALUES(Backtest[forecast_date]),ABS(CALCULATE([Backtest Actual Revenue USD]))))
+
+-- Table: Backtest
+Contribution Forecast MAE USD = AVERAGEX(VALUES(Backtest[forecast_date]),ABS(CALCULATE([Backtest Actual Contribution USD])-CALCULATE([Backtest Predicted Contribution USD])))
+
+-- Table: Backtest
+Contribution Forecast WAPE = DIVIDE(SUMX(VALUES(Backtest[forecast_date]),ABS(CALCULATE([Backtest Actual Contribution USD])-CALCULATE([Backtest Predicted Contribution USD]))),SUMX(VALUES(Backtest[forecast_date]),ABS(CALCULATE([Backtest Actual Contribution USD]))))
+
+-- Table: Backtest
+Revenue Forecast Mean Signed Error USD = AVERAGEX(VALUES(Backtest[forecast_date]),CALCULATE([Backtest Actual Revenue USD])-CALCULATE([Backtest Predicted Revenue USD]))
+
+-- Table: Backtest
+Contribution Forecast Mean Signed Error USD = AVERAGEX(VALUES(Backtest[forecast_date]),CALCULATE([Backtest Actual Contribution USD])-CALCULATE([Backtest Predicted Contribution USD]))
+
+-- Table: Future
+Next Week Revenue USD = SUM(Future[predicted_revenue_usd])
+
+-- Table: Future
+Next Week Contribution USD = SUM(Future[predicted_contribution_usd])
+
+-- Table: Scenarios
+Scenario Incremental Contribution USD = SELECTEDVALUE(Scenarios[incremental_contribution_usd])
+
+-- Table: Scenarios
+Scenario Contribution USD = SELECTEDVALUE(Scenarios[predicted_contribution_usd])
+
+-- Table: Scenarios
+Scenario Baseline Contribution USD = MAX(Scenarios[baseline_contribution_usd])
+
+-- Table: Scenarios
+Candidate Incentive USD = 0.60
+
+-- Table: Scenarios
+Candidate Required Trip Lift = MAXX(FILTER(Thresholds,Thresholds[incentive_usd]=0.60),Thresholds[required_trip_lift])
+
+-- Table: Scenarios
+Scenario Trip Lift Cushion PP = SELECTEDVALUE(Scenarios[trip_lift_cushion_pp])
+
+-- Table: Scenarios
+Candidate Conclusion = "$0.60 requires about 4.15% additional trips to preserve baseline contribution. Required response, not a prediction."

@@ -1,0 +1,106 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "sensitivity",
+  "position": {
+    "x": 32,
+    "y": 235,
+    "width": 700,
+    "height": 230,
+    "z": 0,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "drillFilterOtherVisuals": false,
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Scenarios"
+                    }
+                  },
+                  "Property": "assumed_trip_lift"
+                }
+              },
+              "queryRef": "Scenarios.assumed_trip_lift",
+              "nativeQueryRef": "assumed_trip_lift",
+              "displayName": "assumed trip lift"
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Scenarios"
+                    }
+                  },
+                  "Property": "incentive_usd"
+                }
+              },
+              "queryRef": "Scenarios.incentive_usd",
+              "nativeQueryRef": "incentive_usd",
+              "displayName": "incentive usd"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Scenarios"
+                    }
+                  },
+                  "Property": "Scenario Incremental Contribution USD"
+                }
+              },
+              "queryRef": "Scenarios.Scenario Incremental Contribution USD",
+              "nativeQueryRef": "Scenario Incremental Contribution USD",
+              "displayName": "Scenario Incremental Contribution USD"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Contribution change by assumed trip response'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,5 @@
+period,assigned_group,markets,market_days,trips,gross_bookings_usd,revenue_usd,incentive_usd,variable_cost_usd,contribution_usd
+Baseline,control,24,672,15183,402438.42,100106.28,6073.2,17843.13,76189.95
+Baseline,treatment,24,672,15006,397225.29,98801.97,6002.4,17625.15,75174.42
+Experiment,control,24,672,15850,419825.76,104463.44,6340.0,18621.2,79502.24
+Experiment,treatment,24,672,17584,466659.46,116024.94,19342.4,20676.72,76005.82

@@ -1,0 +1,92 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "thresholds",
+  "position": {
+    "x": 755,
+    "y": 235,
+    "width": 493,
+    "height": 230,
+    "z": 0,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "drillFilterOtherVisuals": false,
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Thresholds"
+                    }
+                  },
+                  "Property": "incentive_usd"
+                }
+              },
+              "queryRef": "Thresholds.incentive_usd",
+              "nativeQueryRef": "incentive_usd",
+              "displayName": "incentive usd"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Thresholds"
+                        }
+                      },
+                      "Property": "required_trip_lift"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Avg(Thresholds.required_trip_lift)",
+              "nativeQueryRef": "Required lift",
+              "format": "0.00%"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Required trip growth by incentive level'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

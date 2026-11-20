@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "experiment",
+  "displayName": "02 Experiment results",
+  "displayOption": "FitToPage",
+  "width": 1280,
+  "height": 720,
+  "visualInteractions": [
+    {
+      "source": "paireffects",
+      "target": "effectrev",
+      "type": "NoFilter"
+    },
+    {
+      "source": "paireffects",
+      "target": "effectcm",
+      "type": "NoFilter"
+    },
+    {
+      "source": "paireffects",
+      "target": "paircount",
+      "type": "NoFilter"
+    },
+    {
+      "source": "paireffects",
+      "target": "se",
+      "type": "NoFilter"
+    },
+    {
+      "source": "paireffects",
+      "target": "intervals",
+      "type": "NoFilter"
+    },
+    {
+      "source": "paireffects",
+      "target": "bridge",
+      "type": "NoFilter"
+    }
+  ]
+}
